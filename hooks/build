@@ -17,11 +17,11 @@ function build_image(){
     if [ "${1}" == "latest" ]; then
         # Latest version - we do not need the version argument - latest version is defined in Dockerfile itself
         docker build --rm --build-arg BUILD_DATE="${BUILD_DATE}" \
-            -t "${image_full_name}"
+            -t "${image_full_name}" .
     else
         docker build --rm --build-arg BUILD_DATE="${BUILD_DATE}" \
             --build-arg RDF4J_VERSION="${1}" \
-            -t "${image_full_name}"
+            -t "${image_full_name}" .
     fi
 
     docker push "${image_full_name}"
