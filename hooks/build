@@ -1,8 +1,31 @@
 #!/usr/bin/env sh
 
 echo "------ HOOK START - BUILD -------"
-printenv
 
-docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` --build-arg VCS_REF=$SOURCE_COMMIT -t $IMAGE_NAME .
+DOCKER_HUB_NAME=nmtan/rdf4j
+DOCKER_TAGS=(2.4.0 2.3.2 2.2.4 2.1.6 2.0.3 1.0.4 "latest")
+BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
+
+function build_image(){
+    if [ $#  -lt 1 ]; then
+        # missing the damn tag
+        return 0;
+    fi
+
+    if [ "${1}" == "latest" ]; then
+        # Latest version - we do not need the version argument - latest version is defined in Dockerfile itself
+        docker build --rm --build-arg BUILD_DATE="${BUILD_DATE}" \
+            -t "${DOCKER_HUB_NAME}:${1}" .
+    else
+        docker build --rm --build-arg BUILD_DATE="${BUILD_DATE}" \
+            --build-arg RDF4J_VERSION="${1}" \
+            -t "${DOCKER_HUB_NAME}:${1}" .
+    fi
+}
+
+for tag in "${DOCKER_TAGS[@]}"; do
+    echo "Building the image ${DOCKER_HUB_NAME}:${tag}"
+    build_image "${tag}"
+done
 
 echo "------ HOOK END - BUILD -------"
