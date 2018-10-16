@@ -3,7 +3,7 @@
 echo "------ HOOK START - BUILD -------"
 
 DOCKER_HUB_NAME=nmtan/rdf4j
-DOCKER_TAGS=(2.4.0 2.3.2 2.2.4 2.1.6 2.0.3 1.0.4 latest)
+DOCKER_TAGS=(latest 2.4.0 2.3.2 2.2.4 2.1.6 2.0.3 1.0.4)
 BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 
 function build_image(){
@@ -13,7 +13,7 @@ function build_image(){
     fi
 
     tag_name="${1}"
-    image_full_name="${DOCKER_HUB_NAME}:${tag_name}" .
+    image_full_name="${DOCKER_HUB_NAME}:${tag_name}"
     if [ "${1}" == "latest" ]; then
         # Latest version - we do not need the version argument - latest version is defined in Dockerfile itself
         docker build --rm --build-arg BUILD_DATE="${BUILD_DATE}" \
