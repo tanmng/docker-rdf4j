@@ -3,7 +3,7 @@
 echo "------ HOOK START - BUILD -------"
 
 DOCKER_HUB_NAME=nmtan/rdf4j
-DOCKER_TAGS=(latest 2.4.0 2.3.2 2.2.4 2.1.6 2.0.3 1.0.4)
+VERSION_LIST_FILE=versions
 BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 
 function build_image(){
@@ -27,9 +27,9 @@ function build_image(){
     docker push "${image_full_name}"
 }
 
-for tag in "${DOCKER_TAGS[@]}"; do
+while read -r tag; do
     echo "Building the image ${DOCKER_HUB_NAME}:${tag}"
     build_image "${tag}"
-done
+done < ${VERSION_LIST_FILE}
 
 echo "------ HOOK END - BUILD -------"
