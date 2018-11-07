@@ -40,7 +40,7 @@ Once the container is running, you can access the RDF4j Server and workbench by 
 version: '3'
 
 services:
-  db:
+  rdf4j:
     image: nmtan/rdf4j
     restart: always
     environment:
@@ -60,8 +60,7 @@ To run the service
 ### Standalone
 
 ```bash
-docker run -it --name chevereto -d \
-    --link mysql:mysql \
+docker run -it --name rdf4j -d \
     -p 8080:8080 \
     -e JAVA_OPTS='-Xmx4g -Xms4g'
     nmtan/rdf4j
