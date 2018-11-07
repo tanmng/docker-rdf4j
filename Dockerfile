@@ -1,5 +1,5 @@
 FROM alpine as downloader
-ARG RDF4J_VERSION="2.4.0"
+ARG RDF4J_VERSION="2.4.1"
 
 # Download the release and then extract that
 RUN apk add --no-cache curl unzip && \
@@ -13,4 +13,5 @@ RUN apk add --no-cache curl unzip && \
 FROM tomcat:8-alpine
 COPY --from=downloader /extracted/rdf4j/war/*.war /usr/local/tomcat/webapps/
 ARG BUILD_DATE
+ARG RDF4J_VERSION="2.4.1"
 LABEL maintainer="Tan Nguyen <tan.mng90@gmail.com>", BUILD_SIGNATURE="${BUILD_DATE}; rdf4j version ${RDF4J_VERSION}"
